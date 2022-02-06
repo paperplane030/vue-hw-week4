@@ -88,7 +88,22 @@ const app = createApp({
         })
     },
     addProductModal() {
-      this.product_temp.edit = false
+      // 避免編輯的資料留在新增的 modal 上
+      this.product_temp = {
+        edit: false,
+        data: {
+          title: '',
+          category: '',
+          origin_price: 0,
+          price: 0,
+          unit: '',
+          description: '',
+          content: '',
+          is_enabled: 0,
+          imageUrl: '',
+          imagesUrl: [],
+        },
+      }
       this.productModal.show()
     },
     closeModal() {
@@ -101,6 +116,10 @@ const app = createApp({
     editProductModal(item) {
       this.product_temp.edit = true
       this.product_temp.data = JSON.parse(JSON.stringify(item))
+      // 新增時沒有新增副圖片，也能在編輯時新增
+      if (!this.product_temp.data.imagesUrl) {
+        this.product_temp.data.imagesUrl = []
+      }
       this.productModal.show()
     },
     openDelProductModal(item) {
