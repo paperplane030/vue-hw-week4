@@ -1,5 +1,7 @@
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.9/vue.esm-browser.js'
 import pagination from './component/pagination/pagination.js'
+import productModal from './component/productModal/productModal.js'
+import delModal from './component/delModal/delModal.js'
 const app = createApp({
   data() {
     return {
@@ -33,6 +35,8 @@ const app = createApp({
   },
   components: {
     pagination,
+    productModal,
+    delModal,
   },
   mounted() {
     this.checkLogin()
@@ -87,68 +91,21 @@ const app = createApp({
       this.product_temp.edit = false
       this.productModal.show()
     },
-    addProduct() {
-      axios
-        .post(`${this.url}/api/${this.path}/admin/product`, {
-          data: this.product_temp.data,
-        })
-        // 成功
-        .then((res) => {
-          this.getData()
-          this.productModal.hide()
-        })
-        // 失敗
-        .catch((error) => {
-          alert('新增商品失敗，請重新操作')
-          this.productModal.hide()
-        })
+    closeModal() {
+      this.product_temp.edit = false
+      this.productModal.hide()
+    },
+    closeDelModal() {
+      this.delProductModal.hide()
     },
     editProductModal(item) {
       this.product_temp.edit = true
-      this.product_temp.data = item
+      this.product_temp.data = JSON.parse(JSON.stringify(item))
       this.productModal.show()
-    },
-    editProduct() {
-      axios
-        .put(
-          `${this.url}/api/${this.path}/admin/product/${this.product_temp.data.id}`,
-          {
-            data: this.product_temp.data,
-          }
-        )
-        // 成功
-        .then((res) => {
-          this.getData()
-          this.productModal.hide()
-        })
-        // 失敗
-        .catch((error) => {
-          alert('編輯商品失敗，請重新操作')
-          this.productModal.hide()
-        })
     },
     openDelProductModal(item) {
       this.delProductModal.show()
-      this.product_temp.data = item
-    },
-    delProduct() {
-      axios
-        .delete(
-          `${this.url}/api/${this.path}/admin/product/${this.product_temp.data.id}`
-        )
-        // 成功
-        .then((res) => {
-          this.getData()
-          this.delProductModal.hide()
-        })
-        // 失敗
-        .catch((error) => {
-          alert('刪除商品失敗，請重新操作')
-          this.delProductModal.hide()
-        })
-    },
-    delImages(index) {
-      this.product_temp.data.imagesUrl.splice(index, 1)
+      this.product_temp.data = JSON.parse(JSON.stringify(item))
     },
     productStatus(status, item) {
       const temp = JSON.parse(JSON.stringify(item))
