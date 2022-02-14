@@ -25,9 +25,8 @@ export default {
         })
         // 失敗
         .catch((error) => {
-          alert('新增商品失敗，請重新操作')
+          alert(error.data.message)
           // this.productModal.hide()
-          this.closeModal()
         })
     },
     editProduct() {
@@ -46,9 +45,8 @@ export default {
         })
         // 失敗
         .catch((error) => {
-          alert('編輯商品失敗，請重新操作')
+          alert(error.data.message)
           // this.productModal.hide()
-          this.closeModal()
         })
     },
     delImages(index) {
